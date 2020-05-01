@@ -8,5 +8,5 @@ for i in $target_dir/*
 do
   echo "iterating: $target_dir"
   echo "i: $i"
-  ./process-item.sh $i $dest_dir
+  ./process-item.sh "$i" "$dest_dir"
 done

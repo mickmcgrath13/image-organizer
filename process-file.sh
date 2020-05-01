@@ -36,12 +36,12 @@ echo "Ensure dest exists:"
 echo "dest root:      $dest_dir"
 echo "dest sub:       $dest_dir_sub"
 echo "dest_dir_full:  $dest_dir_full"
-mkdir -p $dest_dir_full
+mkdir -p "$dest_dir_full"
 
 if [ -n "$IMAGE_ORGANIZER_MOVE" ]; then
   echo "MOVING:  $target_file -> $dest_dir_full"
-  mv $target_file $dest_dir_full
+  mv "$target_file" "$dest_dir_full"
 else
   echo "COPYING:  $target_file -> $dest_dir_full"
-  cp $target_file $dest_dir_full
+  cp "$target_file" "$dest_dir_full"
 fi

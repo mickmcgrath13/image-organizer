@@ -15,14 +15,14 @@ echo ""
 
 echo ""
 echo "Checkig if dest exists ($dest_dir)"
-if [ -d $dest_dir ]; then
+if [ -d "$dest_dir" ]; then
   echo "   dest exists"
 else
   echo "   dest does not exist.  Creating"
-  mkdir -p $dest_dir
+  mkdir -p "$dest_dir"
 fi
 echo ""
 
 
-./process-item.sh $target_dir $dest_dir
+./process-item.sh "$target_dir" "$dest_dir"
 
