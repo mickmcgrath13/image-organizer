@@ -7,3 +7,12 @@ Usage
 ./run $src $dest
 ```
 
+## Settings
+
+Settings are configured via environment variables
+
+### Copy/Move
+
+`IMAGE_ORGANIZER_MOVE`
+
+If value present, move instead of copy
