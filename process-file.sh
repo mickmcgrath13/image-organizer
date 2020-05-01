@@ -13,8 +13,17 @@ fi
 echo "Processing file: $target_file"
 
 # get modified date of the file
-modified_year=$(stat -f "%Sm" -t "%Y" "$target_file")
-modified_month=$(stat -f "%Sm" -t "%m" "$target_file")
+if [ -n "$(uname | grep Darwin)" ]; then
+  modified_year=$(stat -f "%Sm" -t "%Y" "$target_file")
+  modified_month=$(stat -f "%Sm" -t "%B" "$target_file")
+else
+  stat_response=$(stat -c '%y' "$target_file")
+  modified_year=$(date -d "$stat_response" "+%Y")
+  modified_month=$(date -d "$stat_response" "+%B")
+fi
+
+
+
 dest_dir_sub="$modified_year/$modified_month"
 
 echo "Modified date (yyyy/mm): $dest_dir_sub"
