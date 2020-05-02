@@ -32,16 +32,25 @@ echo ""
 
 dest_dir_full="$dest_dir/$dest_dir_sub"
 
-echo "Ensure dest exists:"
+echo "Ensure dest dir exists:"
 echo "dest root:      $dest_dir"
 echo "dest sub:       $dest_dir_sub"
 echo "dest_dir_full:  $dest_dir_full"
 mkdir -p "$dest_dir_full"
 
+echo "Check if file exists"
+dest_file="$(./last-path-part.sh "$target_file")"
+dest_file_full="$dest_dir_full/$dest_file"
+while [ -f "$dest_file_full" ]; do
+  dest_file="0_${dest_file}"
+  dest_file_full="$dest_dir_full/$dest_file"
+  echo "File already exists ($dest_file_full).  Renaming: $dest_file"
+done
+
 if [ -n "$IMAGE_ORGANIZER_MOVE" ]; then
-  echo "MOVING:  $target_file -> $dest_dir_full"
-  mv "$target_file" "$dest_dir_full"
+  echo "MOVING:  $target_file -> $dest_file_full"
+  mv "$target_file" "$dest_file_full"
 else
-  echo "COPYING:  $target_file -> $dest_dir_full"
-  cp "$target_file" "$dest_dir_full"
+  echo "COPYING:  $target_file -> $dest_file_full"
+  cp "$target_file" "$dest_file_full"
 fi
