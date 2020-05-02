@@ -8,5 +8,9 @@ for i in $target_dir/*
 do
   echo "iterating: $target_dir"
   echo "i: $i"
-  ./process-item.sh "$i" "$dest_dir"
+  if [ "$(./last-path-part.sh "$i")" = '@eaDir' ]; then
+    echo 'is @eaDir: skipping'
+  else
+    ./process-item.sh "$i" "$dest_dir"
+  fi
 done
