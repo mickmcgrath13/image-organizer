@@ -9,6 +9,8 @@ echo "from:"
 echo "    $target_dir"
 echo "to:"
 echo "    $dest_dir"
+echo "date:"
+echo "$(date "+%Y-%m-%d %H:%M:%S %3N")" #add %3N as we want millisecond too
 echo "==============================="
 echo ""
 
@@ -26,3 +28,10 @@ echo ""
 
 ./process-item.sh "$target_dir" "$dest_dir"
 
+
+echo ""
+echo "======= Moving pictures DONE ======="
+echo "date:"
+echo "$(date "+%Y-%m-%d %H:%M:%S %3N")" #add %3N as we want millisecond too
+echo "==============================="
+echo ""
