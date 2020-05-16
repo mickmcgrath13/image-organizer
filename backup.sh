@@ -12,5 +12,4 @@ echo "log_file_name: $log_file_name"
 IMAGE_ORGANIZER_MOVE="1" \
 ./run.sh \
 "$PHOTOS_ROOT/$SRC_FOLDER" \
-"$DEST_FOLDER" >> "$PHOTOS_ROOT/AllPhotos/log/${log_file_name}"
-cat "$PHOTOS_ROOT/AllPhotos/log/${log_file_name}"
+"$DEST_FOLDER" | tee -a "$PHOTOS_ROOT/AllPhotos/log/${log_file_name}"
