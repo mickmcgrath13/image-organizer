@@ -32,14 +32,24 @@ SRC_FOLDER="test"
 
 if [ -n "$CLEAN_TEST" ]; then
 	echo "cleaning DEST_FOLDER: $DEST_FOLDER"
-	rm -rf "$DEST_FOLDER"/*
+	rm -rf "$DEST_FOLDER"
 	echo "cleaning LOG_FOLDER: $LOG_FOLDER"
-	rm -rf "$LOG_FOLDER"/*
+	rm -rf "$LOG_FOLDER"
 	exit 0
 fi
 
 
 
+
+echo ""
+echo "Checkig if LOG_FOLDER exists ($LOG_FOLDER)"
+if [ -d "$LOG_FOLDER" ]; then
+  echo "   LOG_FOLDER exists"
+else
+  echo "   LOG_FOLDER does not exist.  Creating"
+  mkdir -p "$LOG_FOLDER"
+fi
+echo ""
 
 
 
