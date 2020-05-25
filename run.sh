@@ -3,6 +3,9 @@
 target_dir="$1"
 dest_dir="$2"
 
+START_TIME="$(date "+%Y-%m-%d %H:%M:%S %3N")" #add %3N as we want millisecond too
+START_TIME_SECONDS="$(date "+%s")"
+
 echo ""
 echo "======= Moving pictures ======="
 echo "from:"
@@ -10,7 +13,7 @@ echo "    $target_dir"
 echo "to:"
 echo "    $dest_dir"
 echo "date:"
-echo "$(date "+%Y-%m-%d %H:%M:%S %3N")" #add %3N as we want millisecond too
+echo "$START_TIME"
 echo "==============================="
 echo ""
 
@@ -25,13 +28,15 @@ else
 fi
 echo ""
 
-
 ./process-item.sh "$target_dir" "$dest_dir"
 
+END_TIME="$(date "+%Y-%m-%d %H:%M:%S %3N")" #add %3N as we want millisecond too
+END_TIME_SECONDS="$(date "+%s")"
 
 echo ""
 echo "======= Moving pictures DONE ======="
 echo "date:"
-echo "$(date "+%Y-%m-%d %H:%M:%S %3N")" #add %3N as we want millisecond too
+echo "$END_TIME"  
+echo "Took: $(expr $END_TIME_SECONDS - $START_TIME_SECONDS) Seconds"
 echo "==============================="
 echo ""
