@@ -10,15 +10,35 @@ if [ ! -f "$target_file" ]; then
   exit 0
 fi
 
+if [ -z "$(which exif)" ]; then
+  echo "exif not present"
+  if [ -z "$(which exiftool)" ]; then
+    echo "exiftool not present"
+    exit 0
+  else
+    echo "exiftool present"
+  fi
+fi
+
+
 # get yyyy/M location
 parent_dir="$(./get-parent-dir.sh "$target_file")"
 grandparent_dir="$(./get-grandparent-dir.sh "$target_file")"
 current_location_dir_sub="$grandparent_dir/$parent_dir"
 
 
-exif_date="$(exif "$target_file" -t "DateTimeOriginal" -m)"
-exif_date="${exif_date%% *}"
-exif_date="$(echo "$exif_date" | tr : -)"
+if [ -n "$(which exif)" ]; then
+  exif_date="$(exif "$target_file" -t "DateTimeOriginal" -m)"
+  exif_date="${exif_date%% *}"
+  exif_date="$(echo "$exif_date" | tr : -)"
+
+else
+  # exiftool
+  exif_date="$(exiftool -DateTimeOriginal "$target_file")"
+  exif_date="$(echo "$exif_date" | sed -r 's/.*: +(.*) .*/\1/')"
+  exif_date="$(echo "$exif_date" | tr : -)"
+fi
+
 modified_year=$(date -d "${exif_date}" "+%Y")
 modified_month=$(date -d "${exif_date}" "+%B")
 dest_dir_sub="$modified_year/$modified_month"

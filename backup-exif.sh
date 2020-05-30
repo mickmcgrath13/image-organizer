@@ -23,6 +23,16 @@ fi
 
 
 
+if [ -z "$(which exif)" ]; then
+	echo "exif not present"
+	if [ -z "$(which exiftool)" ]; then
+		echo "exiftool not present"
+		exit 0
+	else
+		echo "exiftool present"
+	fi
+fi
+
 
 echo ""
 echo "Checkig if LOG_FOLDER exists ($LOG_FOLDER)"

@@ -85,7 +85,7 @@ if [ -z "$dest_dir_sub" ]; then
     fi
   else
     if [ -z "$SILENT" ]; then
-      echo "    exif command not available"
+      echo "    exif command not available try exiftool"
     fi
   fi
 fi
