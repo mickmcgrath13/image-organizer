@@ -1,33 +1,16 @@
 #!/bin/bash
-cd /home/tron/Projects/image-organizer
+cd /var/services/photo/AllPhotos/image-organizer
+PHOTOS_ROOT=""
+DEST_FOLDER="$PHOTOS_ROOT/AllPhotos/photos"
+
 # SRC_FOLDER should be from $PHOTOS_ROOT
-
-
-
-
-
-####### TESTING
-# PHOTOS_ROOT="/media/tron/Seagate Expansion Drive/GooglePhotos/test_run"
-# DEST_FOLDER="$PHOTOS_ROOT/test_dist"
-# LOG_FOLDER="$PHOTOS_ROOT/test_log"
-# SRC_FOLDER="test"
-
-
-
+SRC_FOLDER="$1"
 
 ####### FOR REALS
-PHOTOS_ROOT="/media/tron/Seagate Expansion Drive/GooglePhotos"
-DEST_FOLDER="/media/tron/Seagate Expansion Drive/GooglePhotos/dist"
-LOG_FOLDER="/media/tron/Seagate Expansion Drive/GooglePhotos/log"
-SRC_FOLDER="raw_merged"
-
-
-
-
-####### FOR REALS - parameterized
-# SRC_FOLDER="$1"
-
-
+PHOTOS_ROOT="/var/services/photo/AllPhotos/photos"
+DEST_FOLDER="/var/services/photo/AllPhotos/photos"
+LOG_FOLDER="/var/services/photo/AllPhotos/log_exif_test"
+SRC_FOLDER="raw"
 
 
 if [ -n "$CLEAN_TEST" ]; then
@@ -60,7 +43,9 @@ echo "log_file_name: $log_file_name"
 
 touch "$LOG_FOLDER/${log_file_name}"
 
-IMAGE_ORGANIZER_MOVE="1" \
+EXIF_CHECK="1" \
+SILENT="1" \
+DRY_RUN="1" \
 ./run.sh \
 "$PHOTOS_ROOT/$SRC_FOLDER" \
 "$DEST_FOLDER" | tee -a "$LOG_FOLDER/${log_file_name}"

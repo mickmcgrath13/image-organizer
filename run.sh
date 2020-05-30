@@ -12,21 +12,23 @@ echo "from:"
 echo "    $target_dir"
 echo "to:"
 echo "    $dest_dir"
-echo "date:"
-echo "$START_TIME"
+echo "date: $START_TIME"
+echo "DRY_RUN: $DRY_RUN"
+echo "SILENT: $SILENT"
 echo "==============================="
 echo ""
 
 
-echo ""
-echo "Checkig if dest exists ($dest_dir)"
 if [ -d "$dest_dir" ]; then
-  echo "   dest exists"
+  echo "Dest exists: $dest_dir"
+  echo ""
 else
-  echo "   dest does not exist.  Creating"
-  mkdir -p "$dest_dir"
+  echo "Creating dest: $dest_dir"
+  echo ""
+  if [ -z "$DRY_RUN" ]; then
+	  mkdir -p "$dest_dir"
+	fi
 fi
-echo ""
 
 ./process-item.sh "$target_dir" "$dest_dir"
 

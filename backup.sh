@@ -2,6 +2,7 @@
 cd /var/services/photo/AllPhotos/image-organizer
 PHOTOS_ROOT="/var/services/photo"
 DEST_FOLDER="$PHOTOS_ROOT/AllPhotos/photos"
+LOG_FOLDER="$PHOTOS_ROOT/AllPhotos/log"
 
 # SRC_FOLDER should be from $PHOTOS_ROOT
 SRC_FOLDER="$1"
@@ -28,4 +29,4 @@ touch "$LOG_FOLDER/${log_file_name}"
 IMAGE_ORGANIZER_MOVE="1" \
 ./run.sh \
 "$PHOTOS_ROOT/$SRC_FOLDER" \
-"$DEST_FOLDER" | tee -a "$PHOTOS_ROOT/AllPhotos/log/${log_file_name}"
+"$DEST_FOLDER" | tee -a "$LOG_FOLDER/${log_file_name}"

@@ -10,15 +10,20 @@ if [ ! -f "$target_file" ]; then
   exit 0
 fi
 
-echo "Processing file:"
-echo "    $target_file"
+if [ -z "$SILENT" ]; then
+  echo "Processing file:"
+  echo "    $target_file"
+fi
 
 
 # check for corresponding json file
 json_file_test="${target_file}.json"
 json_file=""
 if [ -f "$json_file_test" ]; then
-  echo "    corresponding .json file: $(./last-path-part.sh "$json_file_test")"
+  if [ -z "$SILENT" ]; then
+    echo "    corresponding .json file: $(./last-path-part.sh "$json_file_test")"
+  fi
+
   json_file="$json_file_test"
 
   json_data="$(cat "$json_file")"
@@ -29,13 +34,20 @@ if [ -f "$json_file_test" ]; then
     modified_year=$(date -d "@${photoTakenTimeTimestamp}" "+%Y")
     modified_month=$(date -d "@${photoTakenTimeTimestamp}" "+%B")
     dest_dir_sub="$modified_year/$modified_month"
-    echo "    Setting date from corresponding json file '.photoTakenTime.timestamp': $dest_dir_sub"
+
+    if [ -z "$SILENT" ]; then
+      echo "    Setting date from corresponding json file '.photoTakenTime.timestamp': $dest_dir_sub"
+    fi
   else
-    echo "    corresponding json file does not contain key: .photoTakenTime.timestamp"
+    if [ -z "$SILENT" ]; then
+      echo "    corresponding json file does not contain key: .photoTakenTime.timestamp"
+    fi
   fi
 
 else
-  echo "    corresponding json file does not exist"
+  if [ -z "$SILENT" ]; then
+    echo "    corresponding json file does not exist"
+  fi
 fi
 
 
@@ -48,14 +60,35 @@ if [ -z "$dest_dir_sub" ]; then
     modified_year=$(date -d "${parent_dir_date_str}" "+%Y")
     modified_month=$(date -d "${parent_dir_date_str}" "+%B")
     dest_dir_sub="$modified_year/$modified_month"
-    echo "    Parent dir had format (yyyy-mm-dd): $dest_dir_sub"
+    if [ -z "$SILENT" ]; then
+      echo "    Parent dir had format (yyyy-mm-dd): $dest_dir_sub"
+    fi
   else
-    echo "    Parent dir did not have format (yyyy-mm-dd): $parent_dir"
+    if [ -z "$SILENT" ]; then
+      echo "    Parent dir did not have format (yyyy-mm-dd): $parent_dir"
+    fi
   fi
 fi
 
 
-# TODO: if no date set, check if file has exif data
+# if no date set, check if file has exif data
+if [ -z "$dest_dir_sub" ]; then
+  if [ -n "$(which exif)" ]; then
+    exif_date="$(exif "$target_file" -t "DateTimeOriginal" -m)"
+    exif_date="${exif_date%% *}"
+    exif_date="$(echo "$exif_date" | tr : -)"
+    modified_year=$(date -d "${exif_date}" "+%Y")
+    modified_month=$(date -d "${exif_date}" "+%B")
+    dest_dir_sub="$modified_year/$modified_month"
+    if [ -z "$SILENT" ]; then
+      echo "    Date set from exif data: $dest_dir_sub"
+    fi
+  else
+    if [ -z "$SILENT" ]; then
+      echo "    exif command not available"
+    fi
+  fi
+fi
 
 
 # If no date set, get data from `stat` command
@@ -72,65 +105,18 @@ if [ -z "$dest_dir_sub" ]; then
     modified_month=$(date -d "$stat_response" "+%B")
   fi
   dest_dir_sub="$modified_year/$modified_month"
-  echo "    Setting date from 'stat' command: $dest_dir_sub"
+
+  if [ -z "$SILENT" ]; then
+    echo "    Setting date from 'stat' command: $dest_dir_sub"
+  fi
 fi
 
-
-
 if [ -z "$dest_dir_sub" ]; then
-  echo "no dest_dir_sub set.  skipping"
+  if [ -z "$SILENT" ]; then
+    echo "no dest_dir_sub set.  skipping"
+  fi
   exit 0
 fi
 
 
-dest_dir_full="$dest_dir/$dest_dir_sub"
-
-# echo "    Ensure dest dir exists:"
-# echo "        dest root:      $dest_dir"
-# echo "        dest sub:       $dest_dir_sub"
-# echo "        dest_dir_full:  $dest_dir_full"
-mkdir -p "$dest_dir_full"
-
-
-
-# echo "    Check if file exists"
-dest_file="$(./last-path-part.sh "$target_file")"
-dest_file_full="$dest_dir_full/$dest_file"
-while [ -f "$dest_file_full" ]; do
-  dest_file="0_${dest_file}"
-  dest_file_full="$dest_dir_full/$dest_file"
-  echo "        File already exists ($dest_file_full)."
-  echo "            Renaming:"
-  echo "            $dest_file"
-done
-
-if [ -n "$IMAGE_ORGANIZER_MOVE" ]; then
-  echo "    MOVING:"
-  echo "        from: $target_file"
-  echo "        to: $dest_file_full"
-  mv "$target_file" "$dest_file_full"
-
-  # move corresponding json file, too
-  #  taking a shortcut by simply appending '.json'
-  if [ -n "$json_file" ]; then
-    echo "    MOVING corresponding json file:"
-    echo "        from: $target_file"
-    echo "        to: ${dest_file_full}.json"
-    mv "$json_file" "${dest_file_full}.json"
-  fi
-else
-  echo "    COPYING:"
-  echo "        from: $target_file"
-  echo "        to: $dest_file_full"
-  cp "$target_file" "$dest_file_full"
-
-  # copy corresponding json file, too
-  #  taking a shortcut by simply appending '.json'
-  if [ -n "$json_file" ]; then
-    echo "    COPYING corresponding json file:"
-    echo "        from: $target_file"
-    echo "        to: ${dest_file_full}.json"
-    cp "$json_file" "${dest_file_full}.json"
-  fi
-fi
-
+./move-file.sh "$target_file" "$dest_dir" "$dest_dir_sub" "$json_file"

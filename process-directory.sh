@@ -3,13 +3,20 @@
 target_dir="$1"
 dest_dir="$2"
 
-echo "Processing directory:"
-echo "    $target_dir"
+if [ -z "$SILENT" ]; then
+  echo "Processing directory:"
+  echo "    $target_dir"
+fi
+
 for i in "$target_dir"/*
 do
-  echo ""
-  echo "iterating: $target_dir"
-  echo "    i: $(./last-path-part.sh "$i")"
+  
+  if [ -z "$SILENT" ]; then
+    echo ""
+    echo "iterating: $target_dir"
+    echo "    i: $(./last-path-part.sh "$i")"
+  fi
+
   if [ "$(./last-path-part.sh "$i")" = '@eaDir' ]; then
     echo '    is @eaDir: skipping'
   elif [ "$(./get-file-extension.sh "$i")" = 'json' ]; then
