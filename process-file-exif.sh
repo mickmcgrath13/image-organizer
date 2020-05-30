@@ -11,12 +11,18 @@ if [ ! -f "$target_file" ]; then
 fi
 
 if [ -z "$(which exif)" ]; then
-  echo "exif not present"
+  if [ -z "$SILENT" ]; then
+    echo "exif not present"
+  fi
   if [ -z "$(which exiftool)" ]; then
-    echo "exiftool not present"
+    if [ -z "$SILENT" ]; then
+      echo "exiftool not present"
+    fi
     exit 0
   else
-    echo "exiftool present"
+    if [ -z "$SILENT" ]; then
+      echo "exiftool present"
+    fi
   fi
 fi
 

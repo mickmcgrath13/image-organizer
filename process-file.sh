@@ -87,6 +87,20 @@ if [ -z "$dest_dir_sub" ]; then
     if [ -z "$SILENT" ]; then
       echo "    exif command not available try exiftool"
     fi
+
+    if [ -n "$(which exiftool)" ]; then
+      # exiftool
+      exif_date="$(exiftool -DateTimeOriginal "$target_file")"
+      exif_date="$(echo "$exif_date" | sed -r 's/.*: +(.*) .*/\1/')"
+      exif_date="$(echo "$exif_date" | tr : -)"
+      modified_year=$(date -d "${exif_date}" "+%Y")
+      modified_month=$(date -d "${exif_date}" "+%B")
+      dest_dir_sub="$modified_year/$modified_month"
+    else
+      if [ -z "$SILENT" ]; then
+        echo "    exiftool command not available"
+      fi
+    fi
   fi
 fi
 
