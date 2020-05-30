@@ -53,8 +53,8 @@ echo "log_file_name: $log_file_name"
 
 touch "$LOG_FOLDER/${log_file_name}"
 
-# SILENT="1" \
 EXIF_CHECK="1" \
+SILENT="1" \
 DRY_RUN="1" \
 ./run.sh \
 "$PHOTOS_ROOT/$SRC_FOLDER" \
