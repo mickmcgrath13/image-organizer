@@ -7,10 +7,10 @@ DEST_FOLDER="$PHOTOS_ROOT/AllPhotos/photos"
 SRC_FOLDER="$1"
 
 ####### FOR REALS
-PHOTOS_ROOT="/var/services/photo/AllPhotos/photos"
+PHOTOS_ROOT="/var/services/photo/AllPhotos"
 DEST_FOLDER="/var/services/photo/AllPhotos/photos"
 LOG_FOLDER="/var/services/photo/AllPhotos/log_exif_test"
-SRC_FOLDER="raw"
+SRC_FOLDER="photos"
 
 
 if [ -n "$CLEAN_TEST" ]; then
