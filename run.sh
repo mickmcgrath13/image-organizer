@@ -15,6 +15,16 @@ echo "    $dest_dir"
 echo "date: $START_TIME"
 echo "DRY_RUN: $DRY_RUN"
 echo "SILENT: $SILENT"
+if [ -z "$(which exif)" ]; then
+	echo "exif command exists: no"
+else
+	echo "exif command exists: yes"
+fi
+if [ -z "$(which exiftool)" ]; then
+	echo "exiftool command exists: no"
+else
+	echo "exiftool command exists: yes"
+fi
 echo "==============================="
 echo ""
 

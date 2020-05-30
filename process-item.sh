@@ -16,11 +16,19 @@ if [ -d "$target_item" ]; then
   ./process-directory.sh "$target_item" "$dest_dir"
 elif [ -f "$target_item" ]; then
   # echo "    is file"
-  if [ -n "$EXIF_CHECK" ] && [ -n "$(which exif)" ]; then
+  if [ -n "$EXIF_CHECK" ] && ( [ -n "$(which exif)" ] || [ -n "$(which exiftool)"] ); then
   	./process-file-exif.sh "$target_item" "$dest_dir"
   else
   	if [ -z "$(which exif)" ]; then
-  		echo "    exif command not available"
+  		if [ -z "$SILENT" ]; then
+	  		echo "    exif command not available"
+	  	fi
+  	fi
+
+  	if [ -z "$(which exiftool)" ]; then
+  		if [ -z "$SILENT" ]; then
+	  		echo "    exiftool command not available"
+	  	fi
   	fi
   	./process-file.sh "$target_item" "$dest_dir"
   fi
