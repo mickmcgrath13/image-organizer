@@ -1,8 +1,8 @@
 #!/bin/bash
 cd /var/services/photo/AllPhotos/image-organizer
-PHOTOS_ROOT="/var/services/photo"
-DEST_FOLDER="$PHOTOS_ROOT/AllPhotos/photos"
-LOG_FOLDER="$PHOTOS_ROOT/AllPhotos/log-cleanup-test"
+PHOTOS_ROOT="/var/services/photo/AllPhotos"
+DEST_FOLDER="$PHOTOS_ROOT/photos"
+LOG_FOLDER="$PHOTOS_ROOT/log-cleanup-test"
 
 # SRC_FOLDER should be from $PHOTOS_ROOT
 SRC_FOLDER="photos"
