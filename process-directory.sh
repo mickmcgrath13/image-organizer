@@ -10,7 +10,7 @@ fi
 
 for i in "$target_dir"/*
 do
-  
+
   if [ -z "$SILENT" ]; then
     echo ""
     echo "iterating: $target_dir"
@@ -18,9 +18,13 @@ do
   fi
 
   if [ "$(./last-path-part.sh "$i")" = '@eaDir' ]; then
-    echo '    is @eaDir: skipping'
+    if [ -z "$SILENT" ]; then
+      echo '    is @eaDir: skipping'
+    fi
   elif [ "$(./get-file-extension.sh "$i")" = 'json' ]; then
-  	echo '    is .json file: skipping'
+    if [ -z "$SILENT" ]; then
+    	echo '    is .json file: skipping'
+    fi
   else
     ./process-item.sh "$i" "$dest_dir"
   fi
