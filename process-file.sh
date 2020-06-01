@@ -84,17 +84,19 @@ target_file_date=$(./get-min-date.sh \
 
 dest_dir_sub="$(./format-date-folder.sh "$target_file_date")"
 
-# echo ""
-# echo "$target_file"
-# echo "json:             $target_file_date_json"
-# echo "parentdir:        $target_file_date_parentdir"
-# echo "exif:             $target_file_date_exif"
-# echo "exiftool:         $target_file_date_exif"
-# echo "stat:             $target_file_date_stat"
-# echo "target_file_date: $target_file_date"
-# echo ""
-# echo "dest_dir_sub:     $dest_dir_sub"
-# echo ""
+if [ -z "$SILENT" ] || [ -n "$OUTPUT_DATE_DETAILS" ]; then
+  echo ""
+  echo "$target_file"
+  echo "json:             $target_file_date_json"
+  echo "parentdir:        $target_file_date_parentdir"
+  echo "exif:             $target_file_date_exif"
+  echo "exiftool:         $target_file_date_exif"
+  echo "stat:             $target_file_date_stat"
+  echo "target_file_date: $target_file_date"
+  echo ""
+  echo "dest_dir_sub:     $dest_dir_sub"
+  echo ""
+fi
 
 if [ -z "$dest_dir_sub" ]; then
   if [ -z "$SILENT" ]; then

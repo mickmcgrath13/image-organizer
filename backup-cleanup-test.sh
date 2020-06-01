@@ -1,37 +1,11 @@
 #!/bin/bash
 cd /var/services/photo/AllPhotos/image-organizer
-PHOTOS_ROOT=""
+PHOTOS_ROOT="/var/services/photo"
 DEST_FOLDER="$PHOTOS_ROOT/AllPhotos/photos"
+LOG_FOLDER="$PHOTOS_ROOT/AllPhotos/log-cleanup-test"
 
 # SRC_FOLDER should be from $PHOTOS_ROOT
-SRC_FOLDER="$1"
-
-####### FOR REALS
-PHOTOS_ROOT="/var/services/photo/AllPhotos"
-DEST_FOLDER="/var/services/photo/AllPhotos/photos"
-LOG_FOLDER="/var/services/photo/AllPhotos/log_exif_test"
 SRC_FOLDER="photos"
-
-
-if [ -n "$CLEAN_TEST" ]; then
-	echo "cleaning DEST_FOLDER: $DEST_FOLDER"
-	rm -rf "$DEST_FOLDER"
-	echo "cleaning LOG_FOLDER: $LOG_FOLDER"
-	rm -rf "$LOG_FOLDER"
-	exit 0
-fi
-
-
-
-if [ -z "$(which exif)" ]; then
-	echo "exif not present"
-	if [ -z "$(which exiftool)" ]; then
-		echo "exiftool not present"
-		exit 0
-	else
-		echo "exiftool present"
-	fi
-fi
 
 
 echo ""
@@ -53,9 +27,9 @@ echo "log_file_name: $log_file_name"
 
 touch "$LOG_FOLDER/${log_file_name}"
 
-EXIF_CHECK="1" \
-SILENT="1" \
+IMAGE_ORGANIZER_MOVE="1" \
 DRY_RUN="1" \
+SILENT="1" \
 ./run.sh \
 "$PHOTOS_ROOT/$SRC_FOLDER" \
 "$DEST_FOLDER" | tee -a "$LOG_FOLDER/${log_file_name}"
