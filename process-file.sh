@@ -10,10 +10,7 @@ if [ ! -f "$target_file" ]; then
   exit 0
 fi
 
-if [ -z "$SILENT" ]; then
-  echo "Processing file:"
-  echo "    $target_file"
-fi
+echo "{\"processing\":\"$target_file\"}"
 
 
 

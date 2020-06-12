@@ -30,9 +30,7 @@ while [ -f "$dest_file_full" ]; do
 done
 
 if [ -n "$IMAGE_ORGANIZER_MOVE" ]; then
-  echo "    MOVING:"
-  echo "        from: $target_file"
-  echo "        to: $dest_file_full"
+  echo "{\"action\":\"moving\",\"from\":\"$target_file\",\"to\":\"$dest_file_full\"}"
 
   if [ -z "$DRY_RUN" ]; then
     mv "$target_file" "$dest_file_full"
@@ -41,19 +39,14 @@ if [ -n "$IMAGE_ORGANIZER_MOVE" ]; then
   # move corresponding json file, too
   #  taking a shortcut by simply appending '.json'
   if [ -n "$json_file" ]; then
-    echo "    MOVING corresponding json file:"
-    echo "        from: $json_file"
-    echo "        to: ${dest_file_full}.json"
+    echo "{\"action\":\"moving\",\"from\":\"$json_file\",\"to\":\"${dest_file_full}.json\"}"
 
     if [ -z "$DRY_RUN" ]; then
       mv "$json_file" "${dest_file_full}.json"
     fi
   fi
 else
-  echo "    COPYING:"
-  echo "        from: $target_file"
-  echo "        to: $dest_file_full"
-
+  echo "{\"action\":\"copying\",\"from\":\"$target_file\",\"to\":\"$dest_file_full\"}"
   if [ -z "$DRY_RUN" ]; then
     cp "$target_file" "$dest_file_full"
   fi
@@ -61,9 +54,7 @@ else
   # copy corresponding json file, too
   #  taking a shortcut by simply appending '.json'
   if [ -n "$json_file" ]; then
-    echo "    COPYING corresponding json file:"
-    echo "        from: $json_file"
-    echo "        to: ${dest_file_full}.json"
+    echo "{\"action\":\"copying\",\"from\":\"$json_file\",\"to\":\"${dest_file_full}.json\"}"
 
     if [ -z "$DRY_RUN" ]; then
       cp "$json_file" "${dest_file_full}.json"
