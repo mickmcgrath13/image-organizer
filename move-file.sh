@@ -25,8 +25,10 @@ dest_file_full="$dest_dir/$dest_file"
 while [ -f "$dest_file_full" ]; do
   dest_file="0_${dest_file}"
   dest_file_full="$dest_dir/$dest_file"
-  echo "        Renaming:"
-  echo "        $dest_file"
+  if [ -z "$SILENT" ]; then
+    echo "        Renaming:"
+    echo "        $dest_file"
+  fi
 done
 
 if [ -n "$IMAGE_ORGANIZER_MOVE" ]; then
