@@ -28,7 +28,7 @@ echo "log_file_name: $log_file_name"
 touch "$LOG_FOLDER/${log_file_name}"
 
 # DRY_RUN="1" \
-# OUTPUT_DATE_DETAILS="1" \
+OUTPUT_DATE_DETAILS="1" \
 IMAGE_ORGANIZER_MOVE="1" \
 SILENT="1" \
 ./run.sh \
