@@ -87,7 +87,7 @@ if [ -z "$SILENT" ] || [ -n "$OUTPUT_DATE_DETAILS" ]; then
   echo "json:             $target_file_date_json"
   echo "parentdir:        $target_file_date_parentdir"
   echo "exif:             $target_file_date_exif"
-  echo "exiftool:         $target_file_date_exif"
+  echo "exiftool:         $target_file_date_exiftool"
   echo "stat:             $target_file_date_stat"
   echo "target_file_date: $target_file_date"
   echo ""
