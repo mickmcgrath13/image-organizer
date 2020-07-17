@@ -20,7 +20,7 @@ echo ""
 
 
 current_date_str=$(date +'%Y-%m-%d-%H%M%S')
-log_file_name="${current_date_str}_${SRC_FOLDER}.log"
+log_file_name="${current_date_str}_GooglePhotosReformat_log.log"
 echo "log_file_name: $log_file_name"
 
 touch "$LOG_FOLDER/${log_file_name}"
