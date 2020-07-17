@@ -19,9 +19,13 @@ if [ -f "$json_file_test" ]; then
 fi
 
 
-
+###
+###  RENAME LOGIC
+###
 dest_file="$(./last-path-part.sh "$target_file")"
 dest_file_full="$dest_dir/$dest_file"
+renamed_str=""
+dest_file_start="$dest_file"
 while [ -f "$dest_file_full" ]; do
   dest_file="0_${dest_file}"
   dest_file_full="$dest_dir/$dest_file"
@@ -29,37 +33,80 @@ while [ -f "$dest_file_full" ]; do
     echo "        Renaming:"
     echo "        $dest_file"
   fi
+  renamed_str=",\"renamed\": true,\"renamed_from\":\"$dest_file_start\",\"renamed_to\":\"$dest_file\""
 done
 
-if [ -n "$IMAGE_ORGANIZER_MOVE" ]; then
-  echo "{\"action\":\"moving\",\"from\":\"$target_file\",\"to\":\"$dest_file_full\"}"
 
-  if [ -z "$DRY_RUN" ]; then
+###
+###  DRY_RUN LOGIC
+###
+dry_run_str=""
+if [ -n "$DRY_RUN" ]; then
+  dry_run_str=",\"dry-run\": true"
+fi
+
+
+###
+###  SKIP LOGIC
+###
+skipped_str=""
+if [ -n "$SKIP_IF_EXISTS" ]; then
+  skipped_str=",\"skip-if-exists\": true"
+fi
+
+
+
+skip_action=""
+if [ -n "$dry_run_str" ] || [ -n "$skipped_str" ]; then
+  skip_action="1"
+fi
+
+
+#  taking a shortcut by simply appending '.json'
+dest_file_full_json="${dest_file_full}.json"
+
+
+###
+###  MOVE OR COPY
+###
+action_str_moving="\"action\":\"moving\""
+action_str_copying="\"action\":\"copying\""
+from_to_str=",\"from\":\"$target_file\",\"to\":\"$dest_file_full\""
+from_to_str_json=",\"from\":\"$json_file\",\"to\":\"${dest_file_full_json}\""
+
+
+if [ -n "$IMAGE_ORGANIZER_MOVE" ]; then
+  echo "{${action_str_moving}${from_to_str}${renamed_str}${dry_run_str}${skipped_str}}"
+
+  if [ -z "$skip_action" ]; then
     mv "$target_file" "$dest_file_full"
   fi
 
   # move corresponding json file, too
-  #  taking a shortcut by simply appending '.json'
   if [ -n "$json_file" ]; then
-    echo "{\"action\":\"moving\",\"from\":\"$json_file\",\"to\":\"${dest_file_full}.json\"}"
+    if [ -z "$SKIP_JSON_OUTPUT" ]; then
+      echo "{${action_str_moving}${from_to_str_json}}"
+    fi
 
-    if [ -z "$DRY_RUN" ]; then
-      mv "$json_file" "${dest_file_full}.json"
+    if [ -z "$skip_action" ]; then
+      mv "$json_file" "${dest_file_full_json}"
     fi
   fi
 else
-  echo "{\"action\":\"copying\",\"from\":\"$target_file\",\"to\":\"$dest_file_full\"}"
-  if [ -z "$DRY_RUN" ]; then
+  echo "${action_str_copying}${from_to_str}${renamed_str}${skipped_str}}"
+  if [ -z "$skip_action" ]; then
     cp "$target_file" "$dest_file_full"
   fi
 
   # copy corresponding json file, too
   #  taking a shortcut by simply appending '.json'
   if [ -n "$json_file" ]; then
-    echo "{\"action\":\"copying\",\"from\":\"$json_file\",\"to\":\"${dest_file_full}.json\"}"
+    if [ -z "$SKIP_JSON_OUTPUT" ]; then
+      echo "${action_str_copying}${from_to_str_json}}"
+    fi
 
-    if [ -z "$DRY_RUN" ]; then
-      cp "$json_file" "${dest_file_full}.json"
+    if [ -z "$skip_action" ]; then
+      cp "$json_file" "${dest_file_full_json}"
     fi
   fi
 fi
