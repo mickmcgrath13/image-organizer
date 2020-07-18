@@ -57,7 +57,7 @@ fi
 
 
 skip_action=""
-if [ -n "$dry_run_str" ] || [ -n "$skipped_str" ]; then
+if [ -n "$dry_run_str" ] || ([ -n "$skipped_str" ] && [ -f "$dest_file_full" ]); then
   skip_action="1"
 fi
 
@@ -79,7 +79,17 @@ if [ -n "$IMAGE_ORGANIZER_MOVE" ]; then
   echo "{${action_str_moving}${from_to_str}${renamed_str}${dry_run_str}${skipped_str}}"
 
   if [ -z "$skip_action" ]; then
-    mv "$target_file" "$dest_file_full"
+    if [ -n "$IMAGE_ORGANIZER_MOVE_COPYDELETE" ]; then
+      cp "$target_file" "$dest_file_full"
+      if [ -f "$dest_file_full" ]; then
+        echo "{\"remote\":\"$dest_file_full\",\"local\":\"$target_file\", \"copydelete\": true, \"success\": \"remote exists. delete local.\"}"
+        rm "$target_file"
+      else
+        echo "{\"remote\":\"$dest_file_full\",\"local\":\"$target_file\", \"copydelete\": true, \"error\": \"file does not exist in remote location\"}"
+      fi
+    else
+      mv "$target_file" "$dest_file_full"
+    fi
   fi
 
   # move corresponding json file, too
@@ -89,7 +99,17 @@ if [ -n "$IMAGE_ORGANIZER_MOVE" ]; then
     fi
 
     if [ -z "$skip_action" ]; then
-      mv "$json_file" "${dest_file_full_json}"
+      if [ -n "$IMAGE_ORGANIZER_MOVE_COPYDELETE" ]; then
+        cp "$json_file" "${dest_file_full_json}"
+        if [ -f "${dest_file_full_json}" ]; then
+          echo "{\"remote\":\"$dest_file_full_json\",\"local\":\"$json_file\", \"copydelete\": true, \"success\": \"remote exists. delete local.\"}"
+          rm "$json_file"
+        else
+          echo "{{\"remote\":\"$dest_file_full_json\",\"local\":\"$json_file\", \"copydelete\": true, \"error\": \"file does not exist in remote location\"}"
+        fi
+      else
+        mv "$json_file" "${dest_file_full_json}"
+      fi
     fi
   fi
 else

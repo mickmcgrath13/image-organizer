@@ -44,6 +44,16 @@ elif [ -z "$SILENT" ]; then
   echo "    Parent dir did not have format (yyyy-mm-dd)"
 fi
 
+# check if file's directory starts with format yyyy-mm-dd
+target_file_date_parentdir_and_grandparentdir="$(./get-date-parentdir-and-grandparentdir.sh "$target_file")"
+
+# notify logic
+if [ -n "$target_file_date_parentdir_and_grandparentdir" ] && [ -z "$SILENT" ]; then
+  echo "    Parent dir had format (yyyy-mm-dd): $target_file_date_parentdir_and_grandparentdir"
+elif [ -z "$SILENT" ]; then
+  echo "    Parent dir did not have format (yyyy-mm-dd)"
+fi
+
 
 # check if file has exif data
 target_file_date_exif="$(./get-date-exif.sh "$target_file")"
@@ -74,6 +84,7 @@ fi
 target_file_date=$(./get-min-date.sh \
   "$target_file_date_json" \
   "$target_file_date_parentdir" \
+  "$target_file_date_parentdir_and_grandparentdir" \
   "$target_file_date_exif" \
   "$target_file_date_exiftool" \
   "$target_file_date_stat"
@@ -86,6 +97,7 @@ if [ -z "$SILENT" ] || [ -n "$OUTPUT_DATE_DETAILS" ]; then
   echo "$target_file"
   echo "json:             $target_file_date_json"
   echo "parentdir:        $target_file_date_parentdir"
+  echo "parent-and-gp:    $target_file_date_parentdir_and_grandparentdir"
   echo "exif:             $target_file_date_exif"
   echo "exiftool:         $target_file_date_exiftool"
   echo "stat:             $target_file_date_stat"

@@ -1,9 +1,6 @@
 #!/bin/bash
 
 
-LOG_ROOT="$1"
-LOG_FILE="$2"
-
 if [ -z "$LOG_ROOT" ]; then
 	LOG_ROOT="/media/tron/Seagate Expansion Drive/GooglePhotos/log_sync"
 fi
@@ -30,7 +27,8 @@ March"
 
 
 
-
+echo "LOG_ROOT: $LOG_ROOT"
+echo "LOG_FILE: $LOG_FILE"
 
 arr_renamed="$(LOG_ROOT="$LOG_ROOT" LOG_FILE="$LOG_FILE" /bin/bash count-per-folder.sh "renamed" "from")"
 arr_processed="$(LOG_ROOT="$LOG_ROOT" LOG_FILE="$LOG_FILE" /bin/bash count-per-folder.sh "processing" "processing")"
