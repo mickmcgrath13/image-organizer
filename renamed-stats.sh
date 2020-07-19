@@ -30,8 +30,8 @@ March"
 echo "LOG_ROOT: $LOG_ROOT"
 echo "LOG_FILE: $LOG_FILE"
 
-arr_renamed="$(LOG_ROOT="$LOG_ROOT" LOG_FILE="$LOG_FILE" /bin/bash count-per-folder.sh "renamed" "from")"
-arr_processed="$(LOG_ROOT="$LOG_ROOT" LOG_FILE="$LOG_FILE" /bin/bash count-per-folder.sh "processing" "processing")"
+arr_renamed="$(IS_NAS="$IS_NAS" LOG_ROOT="$LOG_ROOT" LOG_FILE="$LOG_FILE" /bin/bash count-per-folder.sh "renamed" "from")"
+arr_processed="$(IS_NAS="$IS_NAS" LOG_ROOT="$LOG_ROOT" LOG_FILE="$LOG_FILE" /bin/bash count-per-folder.sh "processing" "processing")"
 
 years="
 2004

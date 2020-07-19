@@ -24,7 +24,11 @@ function count_by_folder(){
 	local j="$1"
 	local p="$2"
 	j="$(echo "$j" | jq -r ".[].$p")"
-	j="${j//\/media\/tron\/Seagate Expansion Drive\/GooglePhotos\/dist\//}"
+	if [ -n "$IS_NAS" ]; then
+		j="${j//\/var\/services\/photo\/GooglePhotosReformat\//}"
+	else
+		j="${j//\/media\/tron\/Seagate Expansion Drive\/GooglePhotos\/dist\//}"
+	fi
 	j="$(echo "$j" | sed 's,/*[^/]\+/*$,,')"
 	echo "$j" | jq -R -s -c 'split("\n")' | jq -r -c "map({item: .}) | group_by(.item) | map({item: .[0].item, count: length})"
 }
