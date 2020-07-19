@@ -40,7 +40,7 @@ done
 # skip if file starts with 0_
 if [ -n "SKIP_IF_RENAMED_BEFORE" ]; then
   if [ -z "$renamed_str" ]; then
-    STARTS_WITH_0="$(./starts-with-zero "$dest_file")"
+    STARTS_WITH_0="$(./starts-with-zero.sh "$dest_file")"
     if [ -n "$STARTS_WITH_0" ]; then
       renamed_str=",\"renamed\": true,\"STARTS_WITH_0\":\"true\",\"file\":\"$dest_file_full\""
     fi
