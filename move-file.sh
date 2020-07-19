@@ -37,6 +37,17 @@ while [ -f "$dest_file_full" ]; do
 done
 
 
+# skip if file starts with 0_
+if [ -n "SKIP_IF_RENAMED_BEFORE" ]; then
+  if [ -z "$renamed_str" ]; then
+    STARTS_WITH_0="$(./starts-with-zero "$dest_file")"
+    if [ -n "$STARTS_WITH_0" ]; then
+      renamed_str=",\"renamed\": true,\"STARTS_WITH_0\":\"true\",\"file\":\"$dest_file_full\""
+    fi
+  fi
+fi
+
+
 ###
 ###  DRY_RUN LOGIC
 ###
@@ -57,7 +68,7 @@ fi
 
 
 skip_action=""
-if [ -n "$dry_run_str" ] || ([ -n "$skipped_str" ] && [ -f "$dest_file_full" ]); then
+if [ -n "$dry_run_str" ] || ([ -n "$skipped_str" ] && [ -n "$renamed_str" ]); then
   skip_action="1"
 fi
 
