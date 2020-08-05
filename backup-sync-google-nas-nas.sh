@@ -3,7 +3,7 @@
 
 SRC_FOLDER="/var/services/photo/GooglePhotosReformat"
 DEST_FOLDER="/var/services/photo/AllPhotos/photos"
-LOG_FOLDER="/var/services/photo/AllPhotos/log-gp-sync-test"
+LOG_FOLDER="/var/services/photo/AllPhotos/log-gp-sync"
 
 
 if [ -n "$CLEAN_TEST" ]; then
@@ -31,7 +31,7 @@ echo "log_file_name: $log_file_name"
 
 touch "$LOG_FOLDER/${log_file_name}"
 
-DRY_RUN="1" \
+# DRY_RUN="1" \
 IMAGE_ORGANIZER_MOVE="1" \
 SILENT="1" \
 SKIP_IF_EXISTS="1" \
